@@ -10,9 +10,6 @@
 
 STDOUT_START
 
-using std::cerr;
-using std::endl;
-
 // 第一级配置器
 // 直接调用malloc
 template<int __inst>
@@ -21,7 +18,7 @@ class __malloc_alloc_template {
         static void* allocate(size_t __size) {
             void* tmp = malloc(__size);
             if (tmp == 0) {
-                cerr << "_allocate failed" << endl;
+                std::cerr << "_allocate failed" << std::endl;
                 exit(-1); 
             }
             return tmp;
@@ -38,7 +35,7 @@ class __malloc_alloc_template {
         static void* reallocate(void *__p, size_t /* old */, size_t __size) {
             static void* tmp = realloc(__p, __size);
             if (tmp == 0) {
-                cerr << "realloc error" << endl;
+                std::cerr << "realloc error" << std::endl;
                 exit(-1);
             } else {
                 return tmp;

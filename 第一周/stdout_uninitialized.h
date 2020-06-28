@@ -5,6 +5,7 @@
 #include "stdout_config.h"
 #include "stdout_type_traits.h"
 #include "stdout_construct.h"
+#include "stdout_algobase.h"
 
 STDOUT_START
 

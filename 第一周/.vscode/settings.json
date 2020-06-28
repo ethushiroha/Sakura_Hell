@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "memory": "cpp"
+        "memory": "cpp",
+        "array": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "vector": "cpp",
+        "__functional_03": "cpp",
+        "memory_resource": "cpp",
+        "functional": "cpp"
     }
 }

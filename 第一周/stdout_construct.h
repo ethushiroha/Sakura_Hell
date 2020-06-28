@@ -23,7 +23,7 @@ inline void _Construct(_T1* __p) {
 
 // 析构对象
 template<class _Tp>
-inline void _Distroy(_Tp* __pointer) {
+inline void _Destroy(_Tp* __pointer) {
     __pointer->~_Tp();
 }
 

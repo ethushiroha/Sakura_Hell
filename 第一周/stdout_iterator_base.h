@@ -123,7 +123,7 @@ __value_type(const _Iter&) {
 
 template<class _Iter>
 inline typename iterator_traits<_Iter>::difference_type*
-__difference_type(const _Iter&) {
+__distance_type(const _Iter&) {
     return static_cast<typename iterator_traits<_Iter>::difference_type*>(0);
 }
 
@@ -142,8 +142,8 @@ value_type(const _Iter& __i) {
 
 template<class _Iter>
 inline typename iterator_traits<_Iter>::difference_type*
-value_type(const _Iter& __i) {
-    return __difference_type(__i);
+distance_type(const _Iter& __i) {
+    return __distance_type(__i);
 } 
 
 #define __ITERATOR_CATEGORY(__i)    __iterator_category(__i)

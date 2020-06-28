@@ -159,72 +159,69 @@ struct __type_traits<long double> {
     typedef __true_type is_POD_type;
 };
 
-#define true_type typedef __true_type __Integer;
-#define false_type typedef __false_type __Interger;
-
 template<class _Tp>
 struct __Is_Integer {
-    false_type;
+    typedef __false_type __Integral;
 };
 
 template<>
 struct __Is_Integer<int> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<unsigned int> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<short> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<unsigned short> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<long> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<unsigned long> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<>
 struct __Is_Integer<char> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<signed char> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<unsigned char> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<bool> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<>
 struct __Is_Integer<long long> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 template<> 
 struct __Is_Integer<unsigned long long> {
-    true_type;
+    typedef __true_type __Integral;
 };
 
 STDOUT_END

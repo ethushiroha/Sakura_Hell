@@ -100,25 +100,16 @@ inline _OutputIterator __copy_aux2(
     _OutputIterator __result,
     __true_type
 ) {
-    return __copy(__first, __last, __result);
+    return __copy(__first, __last, __result, __ITERATOR_CATEGORY(__first), __DISTANCE_TYPE(__first));
 }
 
-#ifndef __USLC__
 template<class _Tp>
-inline _Tp* __copy_aux2(_Tp* __first, _Tp* __last, _Tp* __result, __true_type) {
+inline _Tp* __copy_aux2(
+    const _Tp* __first, 
+    const _Tp* __last, 
+    _Tp* __result, 
+    __true_type) {
     return __copy_trivial(__first, __last, __result);
-}
-#endif // __USLC__
-
-template<class _Tp>
-inline _Tp* __copy_aux2(const _Tp* __first, const _Tp* __last, _Tp* __result, __true_type) {
-    return __copy_trivial(__first, __last, __result);
-}
-
-template<class _Tp>
-inline _Tp* __copy_trivial(const _Tp* __first, const _Tp* __last, _Tp* __result) {
-    memmove(__result, __first, sizeof(_Tp) * (__last - __first));
-    return __result + (__last - __first);
 }
 
 template<class _InputIterator, class _OutputIterator, class _Distance>
@@ -133,6 +124,19 @@ inline _OutputIterator __copy(
         *__result = *__first;
     }
     return __result;
+}
+
+template <class _RandomAccessIter, class _OutputIter, class _Distance>
+inline _OutputIter
+__copy(_RandomAccessIter __first, _RandomAccessIter __last,
+       _OutputIter __result, random_access_iterator_tag, _Distance*)
+{
+  for (_Distance __n = __last - __first; __n > 0; --__n) {
+    *__result = *__first;
+    ++__first;
+    ++__result;
+  }
+  return __result;
 }
 
 template<class _InputIterator, class _OutputIterator>
