@@ -42,7 +42,7 @@ inline _BidrectionalIterator __copy_backward(
 template<class _BidrectionalIterator1, class _BidrectionalIterator2, class _BoolType>
 struct __copy_backward_dispatch {
     typedef typename iterator_traits<_BidrectionalIterator1>::iterator_category  _Cat;
-    typedef typename iterator_traits<_BidrectionalIterator1>::__difference_type  _Distance;
+    typedef typename iterator_traits<_BidrectionalIterator1>::difference_type  _Distance;
 
     static _BidrectionalIterator2 copy(_BidrectionalIterator1 __first, _BidrectionalIterator1 __last, _BidrectionalIterator2 __result) {
         return __copy_backward(__first, __last, __result, _Cat(), (_Distance*) 0);

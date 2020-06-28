@@ -72,6 +72,7 @@ class vector : protected _Vector_base<_Tp, _Alloc> {
         void _M_insert_aux(iterator __position);
     
     public:
+
         // begin 指向第一个元素，即_M_start
         iterator begin() { return _M_start; }
         const_iterator begin() const { return _M_start; }
@@ -269,6 +270,7 @@ class vector : protected _Vector_base<_Tp, _Alloc> {
             }
             return begin() + __n;
         }
+        
         iterator insert(iterator __position) {
             size_type __n = __position - begin();
             if (_M_finish != _M_end_of_storage && __position == end()) {
@@ -279,22 +281,27 @@ class vector : protected _Vector_base<_Tp, _Alloc> {
             }
             return begin() + __n;
         }
+        
         template<class _InputIterator>
         void insert(_InputIterator __pos, _InputIterator __first, _InputIterator __last) {
             typedef typename __Is_Integer<_InputIterator>::_Integral _Integral;
             _M_insert_dispatch(__pos, __first, __last, _Integral());
         }
+        
         template<class _Integral>
         void _M_insert_dispatch(iterator __pos, _Integral __n, _Integral __val, __true_type) {
             _M_fill_insert(__pos, (size_type) __n, (_Tp) __val);
         }
+        
         template<class _InputIterator>
         void _M_insert_dispatch(iterator __pos, _InputIterator __first, _InputIterator __last, __false_type) {
             _M_range_insert(__pos, __first, __last, __ITERATOR_CATEGORY(__first));
         }
+        
         void insert(iterator __pos, size_type __n, const _Tp& __x) {
             _M_fill_insert(__pos, __n, __x);
         }
+        
         // 从 pos 位置开始，插入n个元素，初值为x
         void _M_fill_insert(iterator __pos, size_type __n, const _Tp& __x);
 
@@ -632,7 +639,6 @@ void vector<_Tp, _Alloc>::_M_range_insert(iterator __position, _ForwardIterator 
         }
     }
 }
-
 
 
 STDOUT_END
