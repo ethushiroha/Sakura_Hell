@@ -1,22 +1,29 @@
-#include "stdout_vector.h"
 #include <iostream>
 #include <stdio.h>
+#include "stdout_vector.h"
 #include <vector>
 
+class student {
+    public:
+        char id;
+        int age;
+        student(char id, int age) {
+            this->id = id;
+            this->age = age;
+        }
+};
 
 int main() {
-    stdout_stl::vector<int> v;
-    v.push_back(1);
-    v.push_back(2);
-    v.push_back(3);
-    v.pop_back();
-    
+    std::vector<student*> v;
+    for (int i = 0; i < 3; i++) {
+        student *st = new student(i, i);
+        v.push_back(st);
+    } 
+    std::vector<student*>::iterator it = v.end();
+    v.erase(it);
 
-    stdout_stl::vector<int>::iterator it = v.begin();
-    for ( ; it != v.end(); ++it) {
-        std::cout << *it << std::endl;
-    }
-    
+    std::cout << (*it)->age << std::endl; 
+
 
     return 0;
 }

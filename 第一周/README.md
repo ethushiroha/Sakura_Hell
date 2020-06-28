@@ -197,3 +197,115 @@
 
 
 另外提供了一个`const unsigned char*`的版本，用于提高速度吧
+
+
+
+## stdout_vector.h
+
+`vector` 继承自`_Vector_base`类，迭代器是一个`RandomAccessIterator`
+
+同时安放了一个顺序迭代器和一个反向迭代器（用来支持rbegin，rend）
+
+### 成员变量
+
+-   _M_start：用来标志vector容器目前使用的空间的头部
+-   _M_finish：用来标志已使用的尾部
+-   _M_end_of_storage：标志可使用空间的尾部
+
+
+
+### 函数
+
+-   begin: 返回_M_start;
+-   end: 返回_M_finish;
+-   size: 容器的大小，begin() - end()
+-   empty: begin() == end()
+-   其余的先省略了
+
+
+
+### 可能存在的问题
+
+-   `pop_back`函数中，只是将对象析构，并且`_M_finish`指针向前移动，对象的地址仍然存在于`vector`中，会造成**`UAF`**
+
+-   `insert`函数中，没有检查`__pos`是否在`_M_start`到`_M_finish`之间，即存在**`下标溢出`**，通过这个可以修改某个地址
+
+    ![DB326CEB4E7AC46B706074798EF19512](README.assets/DB326CEB4E7AC46B706074798EF19512.jpg)
+
+
+
+### poc
+
+```c
+#include "stdout_vector.h"
+#include <iostream>
+#include <stdio.h>
+// 在自带的stl 中也存在这个问题，结果是一样的
+// （因为我是抄的嘛）
+// #include <vector>
+
+int main() {
+    stdout_stl::vector<int> v;
+    // 使_M_end_of_storage != _M_finish
+    // 让insert函数调用_M_insert_aux
+    // _M_insert_aux 也没有检查下标，*__position = _Tp()
+    for (int i = 0; i < 5; i++) {
+        v.push_back(i);
+    } 
+    stdout_stl::vector<int>::iterator it = v.begin();
+    
+    // 等价于 it -= 0x10;
+    it += 0xfffffffffffffffe;
+    std::cout << *v.begin() << std::endl;
+    std::cout << (it == v.end()) << std::endl;
+    std::cout << "size: " << v.size() << std::endl;
+    
+    // 使其在错误的地方构造
+    v.insert(it, 0x80);
+    
+    // 析构的时候就会报错
+    // 因为堆块的头已经被改变成0x80
+    v1.~vector();
+    
+    return 0;
+}
+```
+
+
+
+```c
+#include <iostream>
+#include <stdio.h>
+#include "stdout_vector.h"
+#include <vector>
+
+class student {
+    public:
+        char id;
+        int age;
+        student(char id, int age) {
+            this->id = id;
+            this->age = age;
+        }
+};
+
+
+int main() {
+    std::vector<student*> v;
+    for (int i = 0; i < 3; i++) {
+        student *st = new student(i, i);
+        v.push_back(st);
+    } 
+    std::vector<student*>::iterator it = v.end() - 1;
+    
+    // 弹出元素
+    v.pop_back();
+
+    // 仍然可以使用
+    std::cout << (*it)->age << std::endl; 
+
+
+    return 0;
+}
+```
+
