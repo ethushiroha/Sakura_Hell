@@ -104,6 +104,12 @@ inline _OutputIterator __copy_aux2(
 }
 
 template<class _Tp>
+inline _Tp *__copy_trivial(const _Tp* __first, const _Tp* __last, _Tp* __result) {
+    memmove(__result, __first, sizeof(_Tp) * (__last - __first));
+    return __result + (__last - __first);
+}
+
+template<class _Tp>
 inline _Tp* __copy_aux2(
     const _Tp* __first, 
     const _Tp* __last, 

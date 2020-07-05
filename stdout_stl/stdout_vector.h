@@ -348,6 +348,7 @@ class vector : protected _Vector_base<_Tp, _Alloc> {
             } catch(...) {
                 _M_deallocate(__result, __n);
             }
+            return __result;
         }
 
         template<class _InputIterator>
@@ -416,7 +417,7 @@ vector<_Tp, _Alloc>& vector<_Tp, _Alloc>::operator=(const vector<_Tp, _Alloc>& _
         if (__xlen > capacity()) {
             iterator __tmp = _M_allocate_and_copy(__xlen, __x.begin(), __x.end());
             destroy(_M_start, _M_finish);
-            _M_allocate(_M_start, _M_end_of_storage - _M_start);
+            _M_deallocate(_M_start, _M_end_of_storage - _M_start);
             _M_start = __tmp;
             _M_end_of_storage = _M_start + __xlen;
         } else if (size() >= __xlen) {
